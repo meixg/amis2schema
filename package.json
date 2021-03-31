@@ -1,0 +1,25 @@
+{
+  "name": "amis2schema",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meixg/amis2schema.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meixg/amis2schema/issues"
+  },
+  "homepage": "https://github.com/meixg/amis2schema#readme",
+  "devDependencies": {
+    "@types/json-schema": "^7.0.7",
+    "amis": "^1.1.5",
+    "json-schema": "^0.3.0"
+  }
+}

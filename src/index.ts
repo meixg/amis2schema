@@ -2,7 +2,7 @@ import type {
     JSONSchema4
 } from 'json-schema';
 import type {SchemaNode as AmisSchema, Schema} from 'amis/lib/types';
-import {schemaGenerator} from './schema-generator';
+import {createByValueType, schemaGenerator} from './schema-generator';
 
 class AmisSchema2JsonSchemaCompiler {
     run(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
@@ -12,21 +12,36 @@ class AmisSchema2JsonSchemaCompiler {
     // 有些 controls 内部使用 FieldSet 等套了一层
     // 需要把他们打平
     flatControls(controls: Schema[]) {
+        const res = controls.slice();
         let i = 0;
-        while (i < controls.length) {
-            const control = controls[i];
-            if (control.type === 'fieldSet') {
-                controls.splice(i, 1, ...control.controls);
-                i += control.controls.length;
+        while (i < res.length) {
+            const control = res[i];
+            if (
+                control.type === 'fieldSet'
+                || control.type === 'group'
+                || control.type === 'input-group'
+            ) {
+                const c = this.flatControls(control.controls);
+                res.splice(i, 1, ...c);
+                i += c.length;
                 continue;
             }
-            if (control.type === 'grid') {
-                controls.splice(i, 1, ...control.columns);
-                i += control.columns.length;
+            if (
+                control.type === 'grid'
+                || control.type === 'hbox'
+            ) {
+                const c = this.flatControls(control.columns);
+                res.splice(i, 1, ...c);
+                i += c.length;
+                continue;
+            }
+            if (control.type === 'divider') {
+                res.splice(i, 1);
                 continue;
             }
             i++;
         }
+        return res;
     }
 
     // TODO：
@@ -38,7 +53,7 @@ class AmisSchema2JsonSchemaCompiler {
     }
 
     compileFormOrCombo(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
-        const controls = schema.controls;
+        let controls = schema.controls;
         if (!controls) {
             return {};
         }
@@ -46,7 +61,7 @@ class AmisSchema2JsonSchemaCompiler {
         const res = schemaGenerator.createObject();
 
         // 预处理
-        this.flatControls(controls);
+        controls = this.flatControls(controls);
         // this.processFormula(controls);
 
         controls.forEach((item: Schema) => {
@@ -85,41 +100,15 @@ class AmisSchema2JsonSchemaCompiler {
             case 'chained-select':
             case 'date':
             case 'date-range':
-            case 'editor': {
+            case 'editor':
+            case 'Image': {
                 return this.compileToString(control);
             }
-            case 'Grid': {
-                break;
+            case 'hidden': {
+                return this.compileHidden(control);
             }
-            case 'Group': {
-                break;
-            }
-            case 'HBox': {
-                break;
-            }
-            case 'Hidden': {
-                break;
-            }
-            case 'IconPickerIcons': {
-                break;
-            }
-            case 'IconPicker': {
-                break;
-            }
-            case 'Image': {
-                break;
-            }
-            case 'index': {
-                break;
-            }
-            case 'InputGroup': {
-                break;
-            }
-            case 'Item': {
-                break;
-            }
-            case 'List': {
-                break;
+            case 'list': {
+                return this.compileList(control);
             }
             case 'Location': {
                 break;
@@ -223,22 +212,18 @@ class AmisSchema2JsonSchemaCompiler {
 
     compileCheckbox(schema: Schema) {
         if (schema.trueValue && schema.falseValue) {
-            let type = typeof schema.trueValue;
-
-            if (type === 'string') {
-                return this.compileToString(schema);
-            }
-            else if (type === 'number') {
-                return this.compileToNumber(schema);
-            }
-            else if (type === 'boolean') {
-                return this.compileToBoolean(schema);
-            }
-
-            throw Error('Unsupported checkbox value type: ' + type);
+            return createByValueType(schema.trueValue);
         }
 
         return this.compileToBoolean(schema);
+    }
+
+    compileList(schema: Schema) {
+        return createByValueType(schema.options[0].value);
+    }
+
+    compileHidden(schema: Schema) {
+        return createByValueType(schema.value);
     }
 
     // 下面的是一些通用逻辑，有些类型不需要单独处理

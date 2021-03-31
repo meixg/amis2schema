@@ -39,3 +39,19 @@ export const schemaGenerator = {
         } as gNumber
     }
 }
+
+export function createByValueType(value: any) {
+    let type = typeof value;
+
+    if (type === 'string') {
+        return schemaGenerator.createString();
+    }
+    else if (type === 'number') {
+        return schemaGenerator.createNumber();
+    }
+    else if (type === 'boolean') {
+        return schemaGenerator.createBoolean();
+    }
+
+    throw Error('Unsupported checkbox value type: ' + type);
+}
