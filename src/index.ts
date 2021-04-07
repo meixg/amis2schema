@@ -114,7 +114,7 @@ class AmisSchema2JsonSchemaCompiler {
                 return schemaGenerator.createLocation();
             }
             case 'Matrix': {
-                break;
+                return schemaGenerator.createMatrix();
             }
             case 'NestedSelect': {
                 break;

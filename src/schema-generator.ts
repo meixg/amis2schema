@@ -51,6 +51,22 @@ export const schemaGenerator = {
             },
             required: []
         } as gObject;
+    },
+
+    createMatrix() {
+        return {
+            type: 'array',
+            items: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        checked: schemaGenerator.createBoolean(),
+                        label: schemaGenerator.createString()
+                    }
+                }
+            }
+        } as gArray;
     }
 }
 
