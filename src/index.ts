@@ -111,7 +111,7 @@ class AmisSchema2JsonSchemaCompiler {
                 return this.compileList(control);
             }
             case 'Location': {
-                break;
+                return schemaGenerator.createLocation();
             }
             case 'Matrix': {
                 break;
@@ -220,6 +220,11 @@ class AmisSchema2JsonSchemaCompiler {
 
     compileList(schema: Schema) {
         return createByValueType(schema.options[0].value);
+    }
+
+    compileLocation(schema: Schema) {
+        return 
+
     }
 
     compileHidden(schema: Schema) {

@@ -37,9 +37,25 @@ export const schemaGenerator = {
         return {
             type: 'number'
         } as gNumber
+    },
+
+    createLocation() {
+        return {
+            type: 'object',
+            properties: {
+                address: schemaGenerator.createString(),
+                lat: schemaGenerator.createNumber(),
+                lng: schemaGenerator.createNumber(),
+                city: schemaGenerator.createString(),
+                vendor: schemaGenerator.createString()
+            },
+            required: []
+        } as gObject;
     }
 }
 
+// 有一些类型有候选值，根据候选值的类型来设置 schema 类型
+// 只判断第一个候选值，不支持候选值类型不同的情况
 export function createByValueType(value: any) {
     let type = typeof value;
 
