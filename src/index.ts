@@ -5,7 +5,7 @@ import type {SchemaNode as AmisSchema, Schema} from 'amis/lib/types';
 import {createByValueType, schemaGenerator} from './schema-generator';
 import { addRange } from './utils';
 
-class AmisSchema2JsonSchemaCompiler {
+class Amis2JsonSchemaCompiler {
     run(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
         return this.compileFormOrCombo(schema);
     }
@@ -121,19 +121,19 @@ class AmisSchema2JsonSchemaCompiler {
             case 'date':
             case 'date-range':
             case 'editor':
-            case 'Image':
-            case 'NestedSelect':
-            case 'Options':
-            case 'Picker':
-            case 'Repeat':
-            case 'RichText': 
-            case 'Transfer':
-            case 'Tag':
-            case 'TabsTransfer':
-            case 'Textarea':
-            case 'Text':
-            case 'TreeSelect':
-            case 'Tree': {
+            case 'image':
+            case 'nested-select':
+            case 'options':
+            case 'picker':
+            case 'repeat':
+            case 'richText': 
+            case 'transfer':
+            case 'tag':
+            case 'tabs-transfer':
+            case 'textarea':
+            case 'text':
+            case 'tree-select':
+            case 'tree': {
                 return this.compileToString(control);
             }
             case 'hidden': {
@@ -142,39 +142,45 @@ class AmisSchema2JsonSchemaCompiler {
             case 'list': {
                 return this.compileList(control);
             }
-            case 'Location': {
+            case 'location': {
                 return schemaGenerator.createLocation();
             }
-            case 'Matrix': {
+            case 'matrix': {
                 return schemaGenerator.createMatrix();
             }
-            case 'Number': {
+            case 'number': {
                 return this.compileNumber(control);
             }
-            case 'Radios': {
+            case 'radios': {
+                const value = typeof control.options[0] === 'object'
+                    ? control.options[0].value
+                    : control.options[0];
                 return createByValueType(control.options[0].value);
             }
-            case 'Range': {
+            case 'range': {
                 return this.compileRange(control);
             }
-            case 'Rating': {
+            case 'rating': {
                 return this.compileToNumber(control);
             }
-            case 'Select': {
-                return createByValueType(control.options[0].value);
+            case 'select': {
+                const value = typeof control.options[0] === 'object'
+                    ? control.options[0].value
+                    : control.options[0];
+                return createByValueType(value);
             }
-            case 'Static': {
+            case 'static': {
                 return createByValueType(control.value);
             }
-            case 'Switch': {
+            case 'switch': {
                 return this.compileSwitch(control);
             }
-            case 'Table': {
+            case 'table': {
                 return this.compileTable(control);
             }
         }
 
-        throw Error(control.type + 'is not handled!');
+        throw Error(control.type + ' is not handled!');
     }
 
     compileArray(schema: Schema) {
@@ -262,16 +268,16 @@ class AmisSchema2JsonSchemaCompiler {
     }
 }
 
-export function amisSchema2JsonSchema(schema: AmisSchema): JSONSchema4 {
+export function amis2JsonSchema(schema: AmisSchema): JSONSchema4 {
     if (typeof schema !== 'object' || Array.isArray(schema)) {
-        throw new Error('amisSchema2JsonSchema 只支持 object 转换');
+        throw new Error('amis2JsonSchema 只支持 object 转换');
     }
 
     if (schema.type !== 'form') {
         throw new Error('根节点的类型需要为 form');
     }
 
-    const compiler = new AmisSchema2JsonSchemaCompiler();
+    const compiler = new Amis2JsonSchemaCompiler();
 
     const {properties, required} = compiler.run(schema);
 
