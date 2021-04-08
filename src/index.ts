@@ -3,6 +3,7 @@ import type {
 } from 'json-schema';
 import type {SchemaNode as AmisSchema, Schema} from 'amis/lib/types';
 import {createByValueType, schemaGenerator} from './schema-generator';
+import { addRange } from './utils';
 
 class AmisSchema2JsonSchemaCompiler {
     run(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
@@ -20,6 +21,7 @@ class AmisSchema2JsonSchemaCompiler {
                 control.type === 'fieldSet'
                 || control.type === 'group'
                 || control.type === 'input-group'
+                || control.type === 'panel'
             ) {
                 const c = this.flatControls(control.controls);
                 res.splice(i, 1, ...c);
@@ -117,48 +119,40 @@ class AmisSchema2JsonSchemaCompiler {
                 return schemaGenerator.createMatrix();
             }
             case 'NestedSelect': {
-                break;
+                return this.compileToString(control);
             }
             case 'Number': {
-                break;
+                return this.compileNumber(control);
             }
             case 'Options': {
-                break;
-            }
-            case 'Panel': {
-                break;
+                return this.compileToString(control);
             }
             case 'Picker': {
-                break;
+                return this.compileToString(control);
             }
             case 'Radios': {
-                break;
+                return createByValueType(control.options[0].value);
             }
             case 'Range': {
-                break;
+                return this.compileRange(control);
             }
             case 'Rating': {
-                break;
+                return this.compileToNumber(control);
             }
             case 'Repeat': {
-                break;
+                return this.compileToString(control);
             }
             case 'RichText': {
-                break;
+                return this.compileToString(control);
             }
             case 'Select': {
-                break;
-            }
-            case 'Service': {
-                break;
+                return createByValueType(control.options[0].value);
             }
             case 'Static': {
-                break;
-            }
-            case 'SubForm': {
-                break;
+                return createByValueType(control.value);
             }
             case 'Switch': {
+                return this.compileSwitch(control);
                 break;
             }
             case 'Table': {
@@ -222,13 +216,32 @@ class AmisSchema2JsonSchemaCompiler {
         return createByValueType(schema.options[0].value);
     }
 
-    compileLocation(schema: Schema) {
-        return 
-
+    compileNumber(schema: Schema) {
+        const s = schemaGenerator.createNumber();
+        addRange(s, schema);
+        return s;
     }
 
     compileHidden(schema: Schema) {
         return createByValueType(schema.value);
+    }
+
+    compileRange(schema: Schema) {
+        if (schema.multiple) {
+            return schemaGenerator.createString();
+        }
+
+        const s = schemaGenerator.createNumber();
+        addRange(s, schema);
+        return s;
+    }
+
+    compileSwitch(schema: Schema) {
+        if (schema.trueValue && schema.falseValue) {
+            return createByValueType(schema.trueValue);
+        }
+
+        return this.compileToBoolean(schema);
     }
 
     // 下面的是一些通用逻辑，有些类型不需要单独处理
