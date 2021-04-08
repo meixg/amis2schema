@@ -10,6 +10,7 @@ class AmisSchema2JsonSchemaCompiler {
         return this.compileFormOrCombo(schema);
     }
 
+    // 这些 type 都是容器，例如：
     // 有些 controls 内部使用 FieldSet 等套了一层
     // 需要把他们打平
     flatControls(controls: Schema[]) {
@@ -17,6 +18,8 @@ class AmisSchema2JsonSchemaCompiler {
         let i = 0;
         while (i < res.length) {
             const control = res[i];
+
+            // 直接把里面的 controls 展开
             if (
                 control.type === 'fieldSet'
                 || control.type === 'group'
@@ -28,6 +31,8 @@ class AmisSchema2JsonSchemaCompiler {
                 i += c.length;
                 continue;
             }
+
+            // 直接把里面的 columns 展开
             if (
                 control.type === 'grid'
                 || control.type === 'hbox'
@@ -37,8 +42,21 @@ class AmisSchema2JsonSchemaCompiler {
                 i += c.length;
                 continue;
             }
+
+            // 删除
             if (control.type === 'divider') {
                 res.splice(i, 1);
+                continue;
+            }
+
+            // 合并 tabs 下面的所有 controls
+            if (control.type === 'tabs') {
+                const c = [];
+                control.tabs.forEach(item => {
+                    c.push(...this.flatControls(item.controls));
+                });
+                res.splice(i, 1, ...c);
+                i += c.length;
                 continue;
             }
             i++;
@@ -103,7 +121,19 @@ class AmisSchema2JsonSchemaCompiler {
             case 'date':
             case 'date-range':
             case 'editor':
-            case 'Image': {
+            case 'Image':
+            case 'NestedSelect':
+            case 'Options':
+            case 'Picker':
+            case 'Repeat':
+            case 'RichText': 
+            case 'Transfer':
+            case 'Tag':
+            case 'TabsTransfer':
+            case 'Textarea':
+            case 'Text':
+            case 'TreeSelect':
+            case 'Tree': {
                 return this.compileToString(control);
             }
             case 'hidden': {
@@ -118,17 +148,8 @@ class AmisSchema2JsonSchemaCompiler {
             case 'Matrix': {
                 return schemaGenerator.createMatrix();
             }
-            case 'NestedSelect': {
-                return this.compileToString(control);
-            }
             case 'Number': {
                 return this.compileNumber(control);
-            }
-            case 'Options': {
-                return this.compileToString(control);
-            }
-            case 'Picker': {
-                return this.compileToString(control);
             }
             case 'Radios': {
                 return createByValueType(control.options[0].value);
@@ -139,12 +160,6 @@ class AmisSchema2JsonSchemaCompiler {
             case 'Rating': {
                 return this.compileToNumber(control);
             }
-            case 'Repeat': {
-                return this.compileToString(control);
-            }
-            case 'RichText': {
-                return this.compileToString(control);
-            }
             case 'Select': {
                 return createByValueType(control.options[0].value);
             }
@@ -153,34 +168,9 @@ class AmisSchema2JsonSchemaCompiler {
             }
             case 'Switch': {
                 return this.compileSwitch(control);
-                break;
             }
             case 'Table': {
-                break;
-            }
-            case 'TabsTransfer': {
-                break;
-            }
-            case 'Tabs': {
-                break;
-            }
-            case 'Tag': {
-                break;
-            }
-            case 'Textarea': {
-                break;
-            }
-            case 'Text': {
-                break;
-            }
-            case 'Transfer': {
-                break;
-            }
-            case 'TreeSelect': {
-                break;
-            }
-            case 'Tree': {
-                break;
+                return this.compileTable(control);
             }
         }
 
@@ -242,6 +232,19 @@ class AmisSchema2JsonSchemaCompiler {
         }
 
         return this.compileToBoolean(schema);
+    }
+
+    compileTable(schema: Schema) {
+        const s = schemaGenerator.createArray();
+        s.items = schemaGenerator.createObject();
+        
+        if (schema.columns) {
+            schema.columns.forEach(item => {
+                s.items.properties[item.name] = schemaGenerator.createString();
+            });
+        }
+
+        return s;
     }
 
     // 下面的是一些通用逻辑，有些类型不需要单独处理
