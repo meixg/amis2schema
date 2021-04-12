@@ -44,7 +44,7 @@ class Amis2JsonSchemaCompiler {
             }
 
             // 删除
-            if (control.type === 'divider') {
+            if (control.type === 'divider' || control.type === 'button') {
                 res.splice(i, 1);
                 continue;
             }

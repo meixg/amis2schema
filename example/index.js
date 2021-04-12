@@ -39,6 +39,12 @@ const amis = {
                     }
                 },
                 {
+                    "label": "ajax请求",
+                    "type": "button",
+                    "actionType": "ajax",
+                    "api": "http://sammlung.bcc-bdbl.baidu.com:8010/operation/util/openresource?url=http%3A%2F%2Fmbd.baidu.com%2Fwebpage%3Ftype%3Dlive%26action%3Dliveshow%26live_type%3Dreview%26room_id%3D4097778274"
+                },
+                {
                     "name": "content_method",
                     "required": false,
                     "validations": {},
