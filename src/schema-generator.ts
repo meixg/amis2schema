@@ -3,7 +3,8 @@ import {
     gArray,
     gString,
     gBoolean,
-    gNumber
+    gNumber,
+    gAny
 } from '../types/jsonSchema';
 
 export const schemaGenerator = {
@@ -67,6 +68,12 @@ export const schemaGenerator = {
                 }
             }
         } as gArray;
+    },
+
+    createAny() {
+        return {
+            type: ['integer', 'string', 'number', 'boolean', 'null', 'array', 'object']
+        } as gAny;
     }
 }
 

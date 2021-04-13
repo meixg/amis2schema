@@ -31,3 +31,8 @@ export interface gNumber extends JSONSchema4 {
     minimum: number;
     maximum: number;
 }
+
+export interface gAny extends JSONSchema4 {
+    type: ['integer', 'string', 'number', 'boolean', 'null', 'array', 'object'];
+}
+

@@ -54,6 +54,19 @@ const amis = {
                         "inc",
                         "dec"
                     ]
+                },
+                {
+                    "type": "static-tpl",
+                    "tpl": "生成的id为：${key}"
+                },
+                {
+                    "label": "端内类型：",
+                    "type": "select",
+                    "name": "na_type",
+                    "source": {
+                        "method": "get",
+                        "url": "https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/mock2/options/level2?a=2"
+                    }
                 }
             ],
             "multiLine": true
