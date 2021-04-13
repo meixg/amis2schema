@@ -3,7 +3,7 @@ import type {
 } from 'json-schema';
 import type {SchemaNode as AmisSchema, Schema} from 'amis/lib/types';
 import {createByValueType, schemaGenerator} from './schema-generator';
-import { addRange } from './utils';
+import { addRange, isIgnoreType } from './utils';
 
 class Amis2JsonSchemaCompiler {
     run(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
@@ -44,7 +44,7 @@ class Amis2JsonSchemaCompiler {
             }
 
             // 删除
-            if (control.type === 'divider' || control.type === 'button') {
+            if (isIgnoreType(control.type)) {
                 res.splice(i, 1);
                 continue;
             }
@@ -164,6 +164,9 @@ class Amis2JsonSchemaCompiler {
                 return this.compileToNumber(control);
             }
             case 'select': {
+                if (!control.options) {
+                    return this.compileToAny(control);
+                }
                 const value = typeof control.options[0] === 'object'
                     ? control.options[0].value
                     : control.options[0];
@@ -265,6 +268,10 @@ class Amis2JsonSchemaCompiler {
 
     compileToBoolean(schema: Schema) {
         return schemaGenerator.createBoolean();
+    }
+
+    compileToAny(schema: Schema) {
+        return schemaGenerator.createAny();
     }
 }
 
