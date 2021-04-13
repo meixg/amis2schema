@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/meixg/amis2schema/compare/v1.1.0...v1.2.0) (2021-04-13)
+
+
+### Features
+
+* supprot new type any and add ignore type ([83f7d3f](https://github.com/meixg/amis2schema/commit/83f7d3f453c3605bf52ae2030755a9ca0355b8a9))
+
 # [1.1.0](https://github.com/meixg/amis2schema/compare/v1.0.0...v1.1.0) (2021-04-12)
 
 
