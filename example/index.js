@@ -67,6 +67,26 @@ const amis = {
                         "method": "get",
                         "url": "https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/mock2/options/level2?a=2"
                     }
+                },
+                {
+                    "type": "datetime",
+                    "name": "datetime",
+                    "label": "日期时间"
+                },
+                {
+                    "type": "datetime-range",
+                    "name": "datetimerange",
+                    "label": "日期时间范围"
+                },
+                {
+                    "type": "month",
+                    "name": "month",
+                    "label": "月份"
+                },
+                {
+                    "type": "month-range",
+                    "name": "mr",
+                    "label": "月份范围"
                 }
             ],
             "multiLine": true

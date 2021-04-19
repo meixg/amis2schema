@@ -120,6 +120,10 @@ class Amis2JsonSchemaCompiler {
             case 'chained-select':
             case 'date':
             case 'date-range':
+            case 'datetime':
+            case 'datetime-range':
+            case 'month':
+            case 'month-range':
             case 'editor':
             case 'image':
             case 'nested-select':
