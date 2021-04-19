@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/meixg/amis2schema/compare/v1.2.0...v1.3.0) (2021-04-19)
+
+
+### Features
+
+* release ([34bac6f](https://github.com/meixg/amis2schema/commit/34bac6f654049a46839006370aa550113e715363))
+
 # [1.2.0](https://github.com/meixg/amis2schema/compare/v1.1.0...v1.2.0) (2021-04-13)
 
 
