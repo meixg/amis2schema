@@ -136,6 +136,7 @@ class Amis2JsonSchemaCompiler {
             case 'tabs-transfer':
             case 'textarea':
             case 'text':
+            case 'url':
             case 'tree-select':
             case 'tree': {
                 return this.compileToString(control);
