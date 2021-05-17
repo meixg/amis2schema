@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/meixg/amis2schema/compare/v1.3.0...v1.4.0) (2021-05-17)
+
+
+### Features
+
+* add type url ([8aaddd0](https://github.com/meixg/amis2schema/commit/8aaddd056664066dbe02a48faa930c5469f8dc4f))
+
 # [1.3.0](https://github.com/meixg/amis2schema/compare/v1.2.0...v1.3.0) (2021-04-19)
 
 
