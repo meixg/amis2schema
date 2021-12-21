@@ -25,6 +25,7 @@ class Amis2JsonSchemaCompiler {
                 || control.type === 'group'
                 || control.type === 'input-group'
                 || control.type === 'panel'
+                || control.type === 'collapse'
             ) {
                 const c = this.flatControls(control.controls);
                 res.splice(i, 1, ...c);
