@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/meixg/amis2schema/compare/v1.4.0...v1.5.0) (2021-12-21)
+
+
+### Features
+
+* add type collapse ([52ed597](https://github.com/meixg/amis2schema/commit/52ed597c30ad2b3b1e4d8ac5180e72ca8ad4bf49))
+
 # [1.4.0](https://github.com/meixg/amis2schema/compare/v1.3.0...v1.4.0) (2021-05-17)
 
 
