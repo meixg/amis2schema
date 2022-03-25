@@ -139,6 +139,7 @@ class Amis2JsonSchemaCompiler {
             case 'text':
             case 'url':
             case 'tree-select':
+            case 'custom':
             case 'tree': {
                 return this.compileToString(control);
             }
