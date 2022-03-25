@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/meixg/amis2schema/compare/v1.5.0...v1.6.0) (2022-03-25)
+
+
+### Features
+
+* add type custom ([6df8019](https://github.com/meixg/amis2schema/commit/6df8019edaebde90998f56182a4e6db548941083))
+
 # [1.5.0](https://github.com/meixg/amis2schema/compare/v1.4.0...v1.5.0) (2021-12-21)
 
 
