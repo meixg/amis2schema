@@ -89,7 +89,6 @@ class Amis2JsonSchemaCompiler {
             if (item.required) {
                 res.required.push(item.name);
             }
-
             res.properties[item.name] = this.control2property(item);
         });
 
@@ -119,12 +118,15 @@ class Amis2JsonSchemaCompiler {
             case 'city':
             case 'color':
             case 'chained-select':
+            case "time":
             case 'date':
             case 'date-range':
             case 'datetime':
             case 'datetime-range':
             case 'month':
             case 'month-range':
+            case "year":
+            case "year-range":
             case 'editor':
             case 'image':
             case 'nested-select':
