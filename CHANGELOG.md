@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/meixg/amis2schema/compare/v1.6.0...v1.7.0) (2022-04-14)
+
+
+### Features
+
+* add type about time and date ([315278f](https://github.com/meixg/amis2schema/commit/315278f00ccb4a2e5040ae56a486ac2c8191fb09))
+
 # [1.6.0](https://github.com/meixg/amis2schema/compare/v1.5.0...v1.6.0) (2022-03-25)
 
 
