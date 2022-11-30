@@ -73,23 +73,40 @@ class Amis2JsonSchemaCompiler {
 
     }
 
-    compileFormOrCombo(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
+    compileFormOrCombo(schema: Schema, type?: string, multiple?: boolean): Pick<JSONSchema4, 'properties' | 'required'>{
         let controls = schema.controls;
         if (!controls) {
             return {};
         }
 
-        const res = schemaGenerator.createObject();
+        let res;
 
         // 预处理
         controls = this.flatControls(controls);
         // this.processFormula(controls);
 
+        // type 为 combo 时，区分对象 or 对象数组
+        if (type === 'combo' && multiple) {
+            res = schemaGenerator.createArray();
+            res.items = schemaGenerator.createObject();
+        } else {
+            res = schemaGenerator.createObject();
+        }
+
         controls.forEach((item: Schema) => {
-            if (item.required) {
-                res.required.push(item.name);
+            if (res.items) {
+                if (item.required) {
+                    res.items.required.push(item.name);
+                    res.items.required = [...new Set(res.items.required)];
+                }
+                res.items.properties[item.name] = this.control2property(item);
+            } else {
+                if (item.required) {
+                    res.required.push(item.name);
+                    res.required = [...new Set(res.required)];
+                }
+                res.properties[item.name] = this.control2property(item);
             }
-            res.properties[item.name] = this.control2property(item);
         });
 
         return res;
@@ -105,7 +122,7 @@ class Amis2JsonSchemaCompiler {
                 return this.compileCheckbox(control);
             }
             case 'combo': {
-                return this.compileFormOrCombo(control);
+                return this.compileFormOrCombo(control, control.type, control.multiple);
             }
 
             // 容器
@@ -245,7 +262,7 @@ class Amis2JsonSchemaCompiler {
     }
 
     compileSwitch(schema: Schema) {
-        if (schema.trueValue && schema.falseValue) {
+        if (schema.trueValue) {
             return createByValueType(schema.trueValue);
         }
 
