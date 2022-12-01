@@ -73,7 +73,9 @@ class Amis2JsonSchemaCompiler {
 
     }
 
-    compileFormOrCombo(schema: Schema, type?: string, multiple?: boolean): Pick<JSONSchema4, 'properties' | 'required'>{
+    compileFormOrCombo(schema: Schema): Pick<JSONSchema4, 'properties' | 'required'>{
+        const type = schema.type;
+        const multiple = schema.multiple;
         let controls = schema.controls;
         if (!controls) {
             return {};
@@ -122,7 +124,7 @@ class Amis2JsonSchemaCompiler {
                 return this.compileCheckbox(control);
             }
             case 'combo': {
-                return this.compileFormOrCombo(control, control.type, control.multiple);
+                return this.compileFormOrCombo(control);
             }
 
             // 容器
