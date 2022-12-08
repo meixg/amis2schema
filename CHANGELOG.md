@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/meixg/amis2schema/compare/v1.8.0...v1.9.0) (2022-12-08)
+
+
+### Features
+
+* Add Type Of Checkboxes ([#11](https://github.com/meixg/amis2schema/issues/11)) ([5ee5f06](https://github.com/meixg/amis2schema/commit/5ee5f068f8d623af54521656115f833d664f61a7))
+
 # [1.8.0](https://github.com/meixg/amis2schema/compare/v1.7.0...v1.8.0) (2022-12-02)
 
 
