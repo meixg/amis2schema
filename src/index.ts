@@ -132,8 +132,12 @@ class Amis2JsonSchemaCompiler {
                 return this.control2property(control.body);
             }
 
+            // 复选框
+            case 'checkboxes': {
+                return this.compileCheckboxes(control);
+            }
+
             // 字符串
-            case 'checkboxes':
             case 'city':
             case 'color':
             case 'chained-select':
@@ -281,6 +285,23 @@ class Amis2JsonSchemaCompiler {
             });
         }
 
+        return s;
+    }
+
+    compileCheckboxes(schema: Schema) {
+        // 根据 joinValues 值区分为字符串 or 数组
+        let s;
+        if (typeof schema.joinValues === 'boolean') {
+            // joinValues 为 false 时为数组
+            if (!schema.joinValues) {
+                s = schemaGenerator.createArray();
+            } else {
+                s = schemaGenerator.createString();
+            }
+        } else {
+            s = schemaGenerator.createString();
+        }
+        
         return s;
     }
 
