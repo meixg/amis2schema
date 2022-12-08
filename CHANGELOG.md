@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/meixg/amis2schema/compare/v1.7.0...v1.8.0) (2022-12-02)
+
+
+### Features
+
+* adapt to type of combo ([a21cb06](https://github.com/meixg/amis2schema/commit/a21cb06c1e796e034e7f4e9a1280f77a25b2d295))
+* adapt to type of combo ([1b9ea76](https://github.com/meixg/amis2schema/commit/1b9ea760e43c85d4779d784e5ce5c025ff1230a1))
+
 # [1.7.0](https://github.com/meixg/amis2schema/compare/v1.6.0...v1.7.0) (2022-04-14)
 
 
